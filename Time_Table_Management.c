@@ -75,6 +75,40 @@ void displaySchedulesByInstructor(struct Schedule* head, const char* instructorN
     printf("+---------------------+------------------+------------------+------------------+\n");
 }
 
+// Function to display schedules for a specific course
+void displaySchedulesByCourse(struct Schedule* head, const char* courseName) {
+    struct Schedule* current = head;
+
+    printf("+---------------------+------------------+------------------+------------------+------------------+\n");
+    printf("|        Day          |     Time Slot    |       Room       |    Instructor    |\n");
+    printf("+---------------------+------------------+------------------+------------------+------------------+\n");
+
+    while (current != NULL) {
+        if (strcmp(current->course, courseName) == 0) {
+            printf("| %-19s | %-16s | %-16s | %-16s |\n", current->day, current->timeslot, current->room, current->instructor);
+        }
+        current = current->next;
+    }
+
+    printf("+---------------------+------------------+------------------+------------------+------------------+\n");
+}
+
+// Function to display the entire timetable
+void displayEntireTimetable(struct Schedule* head) {
+    struct Schedule* current = head;
+
+    printf("+---------------------+------------------+------------------+------------------+------------------+\n");
+    printf("|        Day          |     Time Slot    |       Room       |    Instructor    |      Course      |\n");
+    printf("+---------------------+------------------+------------------+------------------+------------------+\n");
+
+    while (current != NULL) {
+        printf("| %-19s | %-16s | %-16s | %-16s | %-16s |\n", current->day, current->timeslot, current->room, current->instructor, current->course);
+        current = current->next;
+    }
+
+    printf("+---------------------+------------------+------------------+------------------+------------------+\n");
+}
+
 // Function to choose the day for creating the timetable
 void chooseDay(char* day) {
     int choice;
@@ -181,7 +215,9 @@ void displayMenu() {
     printf("1. Add Schedule\n");
     printf("2. Display Schedule by Day\n");
     printf("3. Display Schedule by Instructor\n");
-    printf("4. Exit\n");
+    printf("4. Display Schedule by Course\n");
+    printf("5. Display Entire Timetable\n");
+    printf("6. Exit\n");
 }
 
 // Function to perform login
@@ -234,12 +270,23 @@ int main() {
                 }
                 break;
             case 4:
+                {
+                    char courseName[50];
+                    printf("Enter course name: ");
+                    scanf("%s", courseName);
+                    displaySchedulesByCourse(head, courseName);
+                }
+                break;
+            case 5:
+                displayEntireTimetable(head);
+                break;
+            case 6:
                 printf("Exiting program.\n");
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
         }
-    } while (choice != 4);
+    } while (choice != 6);
 
 
     struct Schedule* current = head;
